@@ -32,3 +32,15 @@ $\color{#4F4F4F}(\ ↓ 이미지\ 클릭시\ 해당\ 페이지로\ 이동합니�
 ### $\large\bf\color{#CD5C5C}타임라인$
 <b>24/10/17 : </b></br>
 -&nbsp;프로젝트 생성 및 업로드</br>
+-&nbsp;PlayerBase, MonsterBase 클래스 생성</br>
+-&nbsp;Mixamo 에서 Monster Mesh 수급</br>
+<!-- 몬스터 매쉬 이미지 추가 -->
+&nbsp;&nbsp;<img src="./ReadMe/MonsterMesh.png" width=300><br>
+-&nbsp;Monster, Player Mesh 설정 및 리타겟</br>
+<!-- 리타겟 진행 이미지 추가 -->
+&nbsp;&nbsp;<img src="./ReadMe/Retargeting.png" width=300><br>
+-&nbsp;Player 애니메이션 블루프린트 생성 및 적용</br>
+<!-- 플레이어 매쉬 이미지 추가 -->
+&nbsp;&nbsp;<img src="./ReadMe/PlayerCustom.png" width=300><br>
+
+<b>24/10/18 : </b></br>

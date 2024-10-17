@@ -23,6 +23,13 @@ AGHPlayerBase::AGHPlayerBase()
 	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f, -90.f));
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		AnimClassRef(TEXT("/Game/_SmartAI/Player/Anim/ABP_Player.ABP_Player_C"));
+	if (AnimClassRef.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(AnimClassRef.Class);
+	}
+
 	GetCapsuleComponent()->InitCapsuleSize(30.f, 90.0f);
 
 	bUseControllerRotationPitch = false;
@@ -32,12 +39,18 @@ AGHPlayerBase::AGHPlayerBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 300.0f, 0.0f);
 
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
+	GetCharacterMovement()->JumpZVelocity = 600.f;
+	GetCharacterMovement()->AirControl = 0.2f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 1500.f;
+	GetCharacterMovement()->BrakingDecelerationFalling = 1000.0f;
+
+	GetCharacterMovement()->GravityScale = 1.5f;
+	GetCharacterMovement()->MaxAcceleration = 1200.f;
+	GetCharacterMovement()->BrakingFrictionFactor = 1.5f;
+	GetCharacterMovement()->bUseSeparateBrakingFriction = true;
+
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
