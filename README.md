@@ -21,13 +21,14 @@ Smart AI
 2주차 :</br>
 3주차 :</br>
 
-### $\large\bf\color{#CD5C5C}Notion\ URL$
+### $\large\bf\color{#CD5C5C}결과물$
+<b>[ Notion URL ]</b></br>
 $\color{#4F4F4F}(\ ↓ 이미지\ 클릭시\ 해당\ 페이지로\ 이동합니다.↓\ )$</br>
 <a href="https://reminiscent-moth-47a.notion.site/UE5-Monster-AI-1227e40d2ccc80fbb3d3dc7847244780?pvs=4">
     <img src="./ReadMe/Notion.png" alt="SmartAI 개발일지" width="400"/>
 
-### $\large\bf\color{#CD5C5C}Youtube\ URL$
-
+<b>[ Youtube URL ]</b></br>
+-</br>
 
 ### $\large\bf\color{#CD5C5C}타임라인$
 <b>24/10/17 : </b></br>
