@@ -14,4 +14,14 @@ class SMARTAI_API AGHTestPlayer : public AGHPlayerBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGHTestPlayer();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
+	TObjectPtr<USkeletalMeshComponent> HeadMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<USkeletalMeshComponent> ClothMesh;
+	
 };
