@@ -17,9 +17,9 @@ Smart AI
 ⑤ 게임 엔진의 구조와 흐름에 대한 이해</br>
 
 ### $\large\bf\color{#CD5C5C}진행계획$
-1주차 :</br>
-2주차 :</br>
-3주차 :</br>
+1주차 : Asset 수급 후, Monster 클래스에 AI Perception 추가</br>
+2주차 : Behavior Tree 작성후 Listen Server 로 Multi 환경 테스트</br>
+3주차 : 스킬 생성 및 플레이어와 상호작용 태스트</br>
 
 ### $\large\bf\color{#CD5C5C}결과물$
 <b>[ Notion URL ]</b></br>
