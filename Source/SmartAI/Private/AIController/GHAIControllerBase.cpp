@@ -3,3 +3,7 @@
 
 #include "AIController/GHAIControllerBase.h"
 
+AGHAIControllerBase::AGHAIControllerBase()
+{
+
+}

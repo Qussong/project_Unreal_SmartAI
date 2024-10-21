@@ -1,6 +1,7 @@
 
 #include "Monster/GHNormalMonster.h"
 #include "Components/CapsuleComponent.h"
+#include "AIController/GHNormalMonsterController.h"
 
 AGHNormalMonster::AGHNormalMonster()
 {
@@ -23,6 +24,9 @@ AGHNormalMonster::AGHNormalMonster()
 	}
 	GetCapsuleComponent()->SetCapsuleSize(25.f, 90.f);
 
+	// AI Controller
+	AIControllerClass = AGHNormalMonsterController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 }
 

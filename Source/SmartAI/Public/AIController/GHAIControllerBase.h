@@ -14,4 +14,9 @@ class SMARTAI_API AGHAIControllerBase : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	AGHAIControllerBase();
+
+protected:
+
 };
