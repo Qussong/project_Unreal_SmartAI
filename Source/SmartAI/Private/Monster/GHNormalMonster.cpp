@@ -8,16 +8,16 @@ AGHNormalMonster::AGHNormalMonster()
 	PrimaryActorTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
-		MeshRef(TEXT("/Script/Engine.SkeletalMesh'/Game/_SmartAI/Monster/Zombie/Zombie.Zombie'"));
+		MeshRef(TEXT("/Script/Engine.SkeletalMesh'/Game/_SmartAI/Monster/Zombie/Mesh/SM_Zombie.SM_Zombie'"));
 	if (MeshRef.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(MeshRef.Object);
 	}
-	GetMesh()->SetRelativeLocation(FVector(0.f, -90.f, 0.f));
+	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f, -90.f));
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
-		AnimRef(TEXT("/Script/Engine.AnimBlueprint'/Game/_SmartAI/Monster/NormalMonster/ABP_Zombie.ABP_Zombie'"));
+		AnimRef(TEXT("/Game/_SmartAI/Monster/Zombie/ABP_Zombie.ABP_Zombie_C"));
 	if (AnimRef.Succeeded())
 	{
 		GetMesh()->SetAnimClass(AnimRef.Class);

@@ -9,6 +9,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISense_Hearing.h"
+
 
 AGHPlayerBase::AGHPlayerBase()
 {
@@ -60,6 +64,12 @@ AGHPlayerBase::AGHPlayerBase()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	// Perception
+	StimuliSourceComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSourceComp"));
+	// 인식될 감각 등록
+	StimuliSourceComp->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSourceComp->RegisterForSense(UAISense_Hearing::StaticClass());
 
 }
 

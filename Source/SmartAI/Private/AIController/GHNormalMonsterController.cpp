@@ -4,7 +4,10 @@
 #include "AIController/GHNormalMonsterController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
+#include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AIPerceptionTypes.h"
 
 AGHNormalMonsterController::AGHNormalMonsterController()
 {
@@ -21,6 +24,42 @@ AGHNormalMonsterController::AGHNormalMonsterController()
 	{
 		BBAsset = BBAssetRef.Object;
 	}
+	
+	// Sight Config
+	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
+	SightConfig->SightRadius = 1500.f;
+	SightConfig->LoseSightRadius = SightConfig->SightRadius + 500.f;
+	SightConfig->PeripheralVisionAngleDegrees = 45.f;
+	SightConfig->DetectionByAffiliation = FAISenseAffiliationFilter(1, 1, 1);
+	SightConfig->AutoSuccessRangeFromLastSeenLocation = 300.f;
+	SightConfig->PointOfViewBackwardOffset = 50.f;
+	SightConfig->NearClippingRadius = 50.f;
+
+	// Hearing Config
+	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
+	HearingConfig->HearingRange = 1500.f;
+	HearingConfig->LoSHearingRange = HearingConfig->HearingRange + 500.f;
+	HearingConfig->bUseLoSHearing = false;
+	HearingConfig->DetectionByAffiliation = FAISenseAffiliationFilter(1, 1, 1);
+
+	// AI Perception
+	AIPerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComp"));
+	AIPerceptionComp->ConfigureSense(*SightConfig);
+	AIPerceptionComp->ConfigureSense(*HearingConfig);
+	AIPerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());	// Prioritize Sight
+
+}
+
+void AGHNormalMonsterController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (IsValid(AIPerceptionComp))
+	{
+		AIPerceptionComp->OnPerceptionUpdated.AddDynamic(this, &AGHNormalMonsterController::OnPerceptionUpdated);
+		AIPerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &AGHNormalMonsterController::OnActorPerceptionUpdated);
+		AIPerceptionComp->OnTargetPerceptionForgotten.AddDynamic(this, &AGHNormalMonsterController::OnActorPerceptionForgetUpdated);
+	}
 }
 
 void AGHNormalMonsterController::OnPossess(APawn* InPawn)
@@ -33,4 +72,23 @@ void AGHNormalMonsterController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
+}
+
+void AGHNormalMonsterController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
+{
+	for (AActor* Actor : UpdatedActors)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("See"));
+
+	}
+}
+
+void AGHNormalMonsterController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
+	UE_LOG(LogTemp, Warning, TEXT("See"));
+
+}
+
+void AGHNormalMonsterController::OnActorPerceptionForgetUpdated(AActor* Actor)
+{
 }
