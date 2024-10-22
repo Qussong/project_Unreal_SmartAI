@@ -9,6 +9,8 @@
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AIPerceptionTypes.h"
 
+#include "Perception/AIPerceptionSystem.h"
+
 AGHNormalMonsterController::AGHNormalMonsterController()
 {
 	static ConstructorHelpers::FObjectFinder<UBehaviorTree>
@@ -36,11 +38,11 @@ AGHNormalMonsterController::AGHNormalMonsterController()
 	SightConfig->NearClippingRadius = 50.f;
 
 	// Hearing Config
-	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
-	HearingConfig->HearingRange = 1500.f;
-	HearingConfig->LoSHearingRange = HearingConfig->HearingRange + 500.f;
-	HearingConfig->bUseLoSHearing = false;
-	HearingConfig->DetectionByAffiliation = FAISenseAffiliationFilter(1, 1, 1);
+	 HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
+	 HearingConfig->HearingRange = 1500.f;
+	 HearingConfig->LoSHearingRange = HearingConfig->HearingRange + 500.f;
+	 HearingConfig->bUseLoSHearing = false;
+	 HearingConfig->DetectionByAffiliation = FAISenseAffiliationFilter(1, 1, 1);
 
 	// AI Perception
 	AIPerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComp"));
@@ -78,17 +80,42 @@ void AGHNormalMonsterController::OnPerceptionUpdated(const TArray<AActor*>& Upda
 {
 	for (AActor* Actor : UpdatedActors)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("See"));
-
+		//UE_LOG(LogTemp, Warning, TEXT("OnPerceptionUpdated"));
 	}
 }
 
 void AGHNormalMonsterController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Warning, TEXT("See"));
+	FActorPerceptionBlueprintInfo Info;
+	AIPerceptionComp->GetActorsPerception(Actor, Info);
 
+	UObject* WorldContextObject = GetWorld();
+	for (const FAIStimulus& Stimulus : Info.LastSensedStimuli)
+	{
+		TSubclassOf<UAISense> SenseClass = UAIPerceptionSystem::GetSenseClassForStimulus(WorldContextObject, Stimulus);
+
+		if (UAISense_Sight::StaticClass() == SenseClass)
+		{
+			ProcessSight(Actor, Stimulus);
+		}
+		else if (UAISense_Hearing::StaticClass() == SenseClass)
+		{
+			ProcessHearing(Actor, Stimulus);
+		}
+	}
 }
 
 void AGHNormalMonsterController::OnActorPerceptionForgetUpdated(AActor* Actor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionForgetUpdated"));
+}
+
+void AGHNormalMonsterController::ProcessSight(AActor* Actor, FAIStimulus Stimulus)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Sight detected!"));
+}
+
+void AGHNormalMonsterController::ProcessHearing(AActor* Actor, FAIStimulus Stimulus)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Hearing  detected!"));
 }

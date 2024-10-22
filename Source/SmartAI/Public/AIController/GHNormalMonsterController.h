@@ -53,9 +53,9 @@ protected:
 	UFUNCTION()
 	void OnActorPerceptionForgetUpdated(AActor* Actor);
 
-	//UFUNCTION()
-	//void ProcessSight(AActor* Actor, FAIStimulus Stimulus);
-	//UFUNCTION()
-	//void ProcessHearing(AActor* Actor, FAIStimulus Stimulus);
+	UFUNCTION()
+	void ProcessSight(AActor* Actor, FAIStimulus Stimulus);
+	UFUNCTION()
+	void ProcessHearing(AActor* Actor, FAIStimulus Stimulus);
 
 };
