@@ -9,7 +9,18 @@
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
 class UAISenseConfig_Hearing;
+class UAISenseConfig_Damage;
 struct FAIStimulus;
+
+UENUM()
+enum class EAIStimulusType : uint8
+{
+	None	= 0,			// 0000
+	Sight	= 1 << 0,		// 0001
+	Sound	= 1 << 1,		// 0010
+	Damage	= 1 << 2,		// 0100
+	Other	= 1 << 3,		// 1000
+};
 
 /**
  * 
@@ -24,6 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -38,13 +50,20 @@ protected:
 	TObjectPtr<UBlackboardData> BBAsset;
 
 // AI Perception
+private:
+	uint8 bIsCheckedSight : 1;
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Perception")
+	uint8 StimulusState = static_cast<uint8>(EAIStimulusType::None);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Perception")
 	TObjectPtr<UAIPerceptionComponent> AIPerceptionComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Perception")
 	TObjectPtr<UAISenseConfig_Sight> SightConfig;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Perception")
 	TObjectPtr<UAISenseConfig_Hearing> HearingConfig;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Perception")
+	TObjectPtr<UAISenseConfig_Damage> DamageConfig;
+
 
 	UFUNCTION()
 	void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
@@ -57,5 +76,6 @@ protected:
 	void ProcessSight(AActor* Actor, FAIStimulus Stimulus);
 	UFUNCTION()
 	void ProcessHearing(AActor* Actor, FAIStimulus Stimulus);
-
+	UFUNCTION()
+	void ProcessDamage(AActor* Actor, FAIStimulus Stimulus);
 };

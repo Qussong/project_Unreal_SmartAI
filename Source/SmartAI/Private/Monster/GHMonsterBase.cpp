@@ -1,5 +1,6 @@
 
 #include "Monster/GHMonsterBase.h"
+#include "Perception/AISense_Damage.h"
 
 AGHMonsterBase::AGHMonsterBase()
 {
@@ -25,3 +26,19 @@ void AGHMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+float AGHMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	// 데미지 적용
+
+
+	// AI Perception Component 에 트리거
+	UAISense_Damage::ReportDamageEvent(GetWorld(), 
+									   this, 
+									   DamageCauser, 
+									   DamageAmount, 
+									   DamageCauser->GetActorLocation(), 
+									   GetActorLocation());
+
+	return 0.0f;
+}

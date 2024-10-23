@@ -12,6 +12,7 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISense_Hearing.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AGHPlayerBase::AGHPlayerBase()
@@ -98,6 +99,9 @@ void AGHPlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGHPlayerBase::Look);
+
+		// Attack
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &AGHPlayerBase::Attack);
 	}
 	else
 	{
@@ -153,3 +157,57 @@ void AGHPlayerBase::Look(const FInputActionValue& Value)
 	}
 }
 
+void AGHPlayerBase::Attack(const FInputActionValue& Value)
+{
+	FHitResult HitResult;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	float AttackRadius = 50.f;
+	FVector Start = GetActorLocation() + GetActorForwardVector() * 50.f;
+	FVector End = Start + GetActorForwardVector() * (AttackRadius * 2);
+	FVector Center = (Start + End) / 2.f;
+
+	bool bHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		FQuat::Identity,
+		ECC_Pawn,
+		FCollisionShape::MakeSphere(AttackRadius),
+		QueryParams);
+
+	float DamageAmount = 1.f;
+
+	if (bHit)
+	{
+		UGameplayStatics::ApplyDamage(
+			HitResult.GetActor(),	// 피해를 받을 액터
+			DamageAmount,			// 적용할 데미지 양
+			GetController(),		// 데미지를 적용한 인스티게이터 (대개 플레이어 캐릭터의 컨트롤러)
+			this,					// 데미지를 주는 액터 (대개 플레이어 캐릭터)
+			nullptr					// 추가적인 데미지 정보 (필요하지 않으면 nullptr)
+		);
+
+		DrawDebugSphere(
+			GetWorld(),
+			Center,             // 구의 중심 위치
+			AttackRadius,       // 구의 반지름
+			10,                 // 세그먼트 수 (구의 부드러움)
+			FColor::Green,		// 구의 색상
+			false,
+			1.f
+		);
+	}
+	else
+	{
+		DrawDebugSphere(
+			GetWorld(),
+			Center,             // 구의 중심 위치
+			AttackRadius,       // 구의 반지름
+			10,                 // 세그먼트 수 (구의 부드러움)
+			FColor::Red,			// 구의 색상
+			false,
+			1.f
+		);
+	}
+}

@@ -39,3 +39,10 @@ void AGHNormalMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+float AGHNormalMonster::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	return 0.0f;
+}
